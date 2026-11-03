@@ -1,0 +1,105 @@
+﻿@model IEnumerable<BE1.Models.Order>
+
+@{
+    ViewBag.Title = "Đơn hàng của tôi";
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<style>
+    .my-orders-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+        .my-orders-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-weight: bold;
+        }
+
+    .table th {
+        background-color: #f8f9fa;
+        color: #495057;
+        text-align: center;
+    }
+
+    .table td {
+        vertical-align: middle !important;
+        text-align: center;
+    }
+
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+    .badge-paid {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .badge-unpaid {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .btn-detail {
+        padding: 5px 12px;
+        font-size: 13px;
+    }
+</style>
+
+<div class="my-orders-container">
+    <h2>LỊCH SỬ ĐƠN HÀNG</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center py-4">
+            <p class="text-muted">Bạn chưa có đơn hàng nào.</p>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Tiếp tục mua sắm</a>
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Mã đơn hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Thanh toán</th>
+                    <th>Giao hàng</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>#@item.OrderID</strong></td>
+                        <td>@(item.OrderDate.ToString("dd/MM/yyyy HH:mm"))</td>
+                        <td><span class="text-danger font-weight-bold">@string.Format("{0:N0} đ", item.TotalAmount)</span></td>
+                        <td>
+                            <span class="badge-status @(item.PaymentStatus == "Thanh toán tiền mặt" || item.PaymentStatus == "Thanh toán paypal" ? "badge-paid" : "badge-unpaid")">
+                                @item.PaymentStatus
+                            </span>
+                        </td>
+                        <td>@item.ShippingMethod</td>
+                        <td>
+                            <a href="@Url.Action("OrderSuccess", "Order", new { id = item.OrderID })" class="btn btn-sm btn-info btn-detail">
+                                Xem chi tiết
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

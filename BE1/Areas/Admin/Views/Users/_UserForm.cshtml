@@ -1,0 +1,92 @@
+﻿@model BE1.Models.User
+
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+@if (ViewData["IsEdit"] != null && (bool)ViewData["IsEdit"] == true)
+{
+    @Html.HiddenFor(model => model.Username)
+    @Html.Hidden("currentImage", Model.Image)
+}
+
+<div class="row user-form-grid">
+    <!-- Cột trái -->
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, "Mã khách hàng", htmlAttributes: new { @class = "control-label" })
+            @if (ViewData["IsEdit"] != null && (bool)ViewData["IsEdit"] == true)
+            {
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập mã khách hàng..." } })
+            }
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, "Mật khẩu", htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password", placeholder = "Mật khẩu..." } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, "Địa chỉ email", htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "email@domain.com..." } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Kích hoạt?</label>
+            <div class="radio-group-container form-control border-0 shadow-none">
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(model => model.IsActive, false) Chưa kích hoạt
+                </label>
+                <label class="radio-inline ml-3">
+                    @Html.RadioButtonFor(model => model.IsActive, true) Kích hoạt
+                </label>
+            </div>
+            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <!-- Cột phải -->
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.FullName, "Họ và tên", htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", placeholder = "Họ và tên đầy đủ..." } })
+            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Xác nhận mật khẩu</label>
+            <input type="password" name="ConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu..." />
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, "Hình ảnh", htmlAttributes: new { @class = "control-label" })
+            <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+            @if (ViewData["IsEdit"] != null && (bool)ViewData["IsEdit"] == true && !string.IsNullOrEmpty(Model.Image))
+            {
+                <div class="mt-2">
+                    <img src="~/Images/Users/@Model.Image" width="80" class="img-thumbnail" />
+                </div>
+            }
+            @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Role, "Vai trò", htmlAttributes: new { @class = "control-label" })
+            <div class="radio-group-container form-control border-0 shadow-none">
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(model => model.Role, "Khách hàng") Khách hàng
+                </label>
+                <label class="radio-inline ml-3">
+                    @Html.RadioButtonFor(model => model.Role, "Nhân viên") Nhân viên
+                </label>
+            </div>
+            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

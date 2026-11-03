@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Cửa hàng trực tuyến</title>
+
+    <!-- Nhúng Bootstrap CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- File CSS tùy chỉnh riêng cho khách hàng -->
+    <link href="~/Content/myStyle/CustomerHome.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <!-- Thanh Menu / Navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Lubu Store", "Index", "Home", new { area = "Customer" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Trang chủ", "Index", "Home1", new { area = "Customer" }, null)</li>
+                    <li>@Html.ActionLink("Sản phẩm", "Index", "Products", new { area = "Customer" }, null)</li>
+                    <li>@Html.ActionLink("Giỏ hàng", "Index", "Cart", new { area = "Customer" }, null)</li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Session["Username"] != null || Request.IsAuthenticated)
+                    {
+                        var username = Session["Username"] ?? User.Identity.Name;
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user"></span> Tài khoản: <strong>@username</strong> <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Lịch sử mua hàng", "MyOrder", "Order", new { area = "Customer" }, null)</li>
+                                <li role="separator" class="divider"></li>
+                                <li>@Html.ActionLink("Đăng xuất", "Logout", "Account", new { area = "Customer" }, null)</li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Đăng nhập", "Login", "Account", new { area = "Customer" }, null)</li>
+                        <li>@Html.ActionLink("Đăng ký", "Register", "Account", new { area = "Customer" }, null)</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Khung chứa nội dung chính của các View con -->
+    <div class="container body-content" style="margin-top: 70px;">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>© @DateTime.Now.Year - Bản quyền thuộc về Phong Cách Xanh (Lubu Store)</p>
+        </footer>
+    </div>
+
+    <!-- Các tập lệnh JavaScript -->
+    <script src="~/Scripts/jquery-3.x.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

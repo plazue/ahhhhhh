@@ -1,0 +1,68 @@
+﻿@model BE1.Models.User
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card shadow mb-4 p-4">
+    <h2 class="text-success mb-4 font-weight-bold" style="background: #e8f5e9; padding: 15px; border-radius: 5px;">QUẢN LÝ KHÁCH HÀNG - CHI TIẾT</h2>
+
+    <div class="row">
+        <!-- Cột trái -->
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label class="control-label font-weight-bold">Mã khách hàng:</label>
+                <p class="form-control-static">@Html.DisplayFor(model => model.Username)</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label font-weight-bold">Mật khẩu:</label>
+                <p class="form-control-static">********</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label font-weight-bold">Địa chỉ email:</label>
+                <p class="form-control-static">@Html.DisplayFor(model => model.Email)</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label font-weight-bold">Kích hoạt?:</label>
+                <p class="form-control-static">
+                    @(Model.IsActive.HasValue && Model.IsActive.Value ? "Kích hoạt" : "Chưa kích hoạt")
+                </p>
+            </div>
+        </div>
+
+        <!-- Cột phải -->
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <label class="control-label font-weight-bold">Họ và tên:</label>
+                <p class="form-control-static">@Html.DisplayFor(model => model.FullName)</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label font-weight-bold">Vai trò:</label>
+                <p class="form-control-static">@Html.DisplayFor(model => model.Role)</p>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label font-weight-bold">Hình ảnh:</label>
+                <div>
+                    @if (!string.IsNullOrEmpty(Model.Image))
+                    {
+                        <img src="~/Images/Users/@Model.Image" width="120" class="img-thumbnail mt-1" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Không có hình ảnh</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-4">
+        @Html.ActionLink("Sửa", "Edit", new { id = Model.Username }, new { @class = "btn btn-light border px-4" })
+        @Html.ActionLink("Danh sách", "Index", null, new { @class = "btn btn-light border px-4 ml-2" })
+    </div>
+</div>

@@ -1,0 +1,20 @@
+﻿@model BE1.Models.User
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["IsEdit"] = true; // Đánh dấu để Partial View nhận diện chế độ Edit
+}
+
+<div class="card shadow mb-4 p-4">
+    <h2 class="text-success mb-4 font-weight-bold" style="background: #e8f5e9; padding: 15px; border-radius: 5px;">QUẢN LÝ KHÁCH HÀNG - CHỈNH SỬA</h2>
+
+    @using (Html.BeginForm("Edit", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.Partial("_UserForm", Model)
+
+        <div class="form-group mt-4">
+            <input type="submit" value="Lưu thay đổi" class="btn btn-light border px-4" />
+            @Html.ActionLink("Danh sách", "Index", null, new { @class = "btn btn-light border px-4 ml-2" })
+        </div>
+    }
+</div>

@@ -1,0 +1,153 @@
+﻿@model BE1.Models.Customer
+
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<style>
+    .profile-container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        margin-top: 20px;
+    }
+
+    .avatar-upload {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+        .avatar-upload img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ddd;
+        }
+
+        .avatar-upload input[type="file"] {
+            display: none;
+        }
+
+        .avatar-upload label {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #007bff;
+            color: white;
+            border-radius: 50%;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .info-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+    }
+</style>
+
+<div class="container profile-container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @using (Html.BeginForm("ProfileInfo", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.CustomerID)
+        @Html.HiddenFor(model => model.Username)
+        @Html.HiddenFor(model => model.CustomerImage)
+
+        <div class="row">
+            <!-- Cột trái: Thông tin cá nhân & Ảnh đại diện -->
+            <div class="col-md-7 border-right">
+                <div class="section-title">Thông tin cá nhân</div>
+
+                <!-- Ảnh đại diện -->
+                <div class="text-left avatar-upload">
+                    @{
+                        string avatarPath = string.IsNullOrEmpty(Model.CustomerImage) ? "/Images/default-avatar.png" : Model.CustomerImage;
+                    }
+                    <img src="@avatarPath" id="avatarPreview" alt="Avatar" />
+                    <label for="ImageFile"><i class="fa fa-camera"></i></label>
+                    <input type="file" id="ImageFile" name="ImageFile" accept="image/*" onchange="previewImage(this)" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Họ & Tên</label>
+                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Địa chỉ</label>
+                    @Html.EditorFor(model => model.CustomerAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CustomerAddress, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary px-4" style="background-color: #1a73e8; border: none;">Lưu thay đổi</button>
+                </div>
+            </div>
+
+            <!-- Cột phải: Số điện thoại, Email & Bảo mật -->
+            <div class="col-md-5">
+                <div class="section-title">Số điện thoại và Email</div>
+
+                <div class="info-group">
+                    <div>
+                        <small class="text-muted"><i class="fa fa-phone"></i> Số điện thoại</small>
+                        <div class="font-weight-bold">@Model.CustomerPhone</div>
+                    </div>
+                    @Html.EditorFor(model => model.CustomerPhone, new { htmlAttributes = new { @class = "form-control d-none" } }) <!-- Giữ giá trị bind -->
+                </div>
+
+                <div class="info-group">
+                    <div>
+                        <small class="text-muted"><i class="fa fa-envelope"></i> Địa chỉ email</small>
+                        <div class="font-weight-bold">@(string.IsNullOrEmpty(Model.CustomerEmail) ? "Chưa thêm email" : Model.CustomerEmail)</div>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    @Html.EditorFor(model => model.CustomerEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập địa chỉ email" } })
+                </div>
+
+                <div class="section-title mt-4">Bảo mật</div>
+                <div class="info-group">
+                    <div>
+                        <small class="text-muted"><i class="fa fa-lock"></i> Đổi mật khẩu</small>
+                        <div class="text-muted">••••••••</div>
+                    </div>
+                    <a href="#" class="text-primary" style="font-size: 14px;">Cập nhật</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('avatarPreview').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

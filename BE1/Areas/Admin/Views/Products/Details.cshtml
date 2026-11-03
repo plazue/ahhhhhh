@@ -1,0 +1,138 @@
+﻿@model BE1.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    /* Tiêu đề trang */
+    h2 {
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    /* Bố cục chia 2 cột: Ảnh bên trái, thông tin bên phải */
+    .details-container {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+        background: #fff;
+        padding: 20px;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    /* Khung chứa hình ảnh sản phẩm */
+    .product-image-box img {
+        width: 180px;
+        height: auto;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        object-fit: cover;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Khung chứa danh sách thông tin (bên phải) */
+    .product-info-box {
+        flex: 1;
+        background-color: #e8f4f8; /* Màu nền xanh nhạt giống mẫu */
+        padding: 20px;
+        border-radius: 4px;
+        border: 1px solid #d0e3ec;
+    }
+
+    .dl-horizontal dt {
+        font-weight: bold;
+        color: #333;
+        margin-top: 10px;
+    }
+
+        .dl-horizontal dt:first-child {
+            margin-top: 0;
+        }
+
+    .dl-horizontal dd {
+        margin-left: 0;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    /* Các nút chức năng (Sửa, Quay lại danh sách) */
+    p > a, div > a {
+        padding: 8px 16px;
+        border-radius: 4px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+        /* Nút Sửa (Edit) - Màu xanh dương */
+        p > a[href*="Edit"] {
+            background-color: #337ab7;
+        }
+
+            p > a[href*="Edit"]:hover {
+                background-color: #286090;
+            }
+
+        /* Nút Quay lại danh sách (Back to List) - Màu xanh đậm/lam */
+        p > a[href*="Index"] {
+            background-color: #2e6da4;
+        }
+
+            p > a[href*="Index"]:hover {
+                background-color: #204d74;
+            }
+</style>
+
+<h2>CHI TIẾT SẢN PHẨM</h2>
+
+<div class="details-container">
+    <!-- Cột Hình ảnh -->
+    <div class="product-image-box">
+        <img src="~/Images/@Model.ProductImage" alt="@Model.ProductName" />
+    </div>
+
+    <!-- Cột Thông tin chi tiết -->
+    <div class="product-info-box">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ProductName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductDecription)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ProductDecription)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ProductPrice)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ProductPrice)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Category.CategoryName)
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.ProductID })
+    @Html.ActionLink("Quay lại danh sách", "Index")
+</p>
